@@ -1,0 +1,88 @@
+body {
+  font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 72px;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.125em;
+  color: #333;
+  line-height: 1.5em;
+}
+
+h1, h2, h3 {
+  color: #000;
+}
+h1 {
+  font-size: 2.5em
+}
+
+h2 {
+  font-size: 2em
+}
+
+h3 {
+  font-size: 1.5em
+}
+
+a {
+  text-decoration: none;
+  color: #09f;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/** TODO delete everything below here? */
+
+
+.btn {
+  border: none;
+  padding: 1em 2em;
+  border-radius: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+.btn.bright {
+  color: #f6f6f6;
+  background-color: #f613eb;
+}
+.btn.muted {
+  color: #121212;
+  background-color: #9dc3e9;
+}
+.btn.america {
+  color: white;
+  background-color: red;
+}
+.btn.midnight {
+  color: #cffffd;
+  background-color: #121212;
+}
+
+
+.row {
+  display: flex;
+  width: 100%;
+}
+
+.col {
+  width: 25%;
+}
+
+.col input {
+  max-width: 80%;
+}
+
+.delete-btn {
+  cursor: pointer;
+}
+
+
+.btn-preview {
+  margin: 1em 0;
+  padding: 1em;
+  border: 1px dotted gray;
+  display: flex;
+  justify-content: space-between;
+}

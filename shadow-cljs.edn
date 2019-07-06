@@ -1,0 +1,23 @@
+{:source-paths ["src" "test"]
+ :dependencies [[reagent "0.8.1"]
+                [cider/cider-nrepl "0.21.1"]]
+
+ :builds {:dev {:output-dir "public/js"
+                :target :browser
+                :modules {:app
+                          {:init-fn scf.demo/init!}}
+
+                :devtools {:after-load scf.demo/mount-root
+                           :http-root "public"
+                           :http-port 8888
+                           :repl-init-ns scf.core}}
+
+          :test {:target :browser-test
+                 :test-dir "resources/public/js/test"
+                 :ns-regexp "-test$"
+                 :devtools {:http-port 8083
+                            :http-root "resources/public/js/test"}}}
+
+ :nrepl {:port 8081
+         :init-ns scf.core
+         :middleware []}}
