@@ -2,71 +2,69 @@
   (:require [scf.state :as state]))
 
 
-(defonce ui-components (atom {}))
-
-; TODO achieve this with a protocol?
-(defn type->component
-  ([t]
-   (type->component t {}))
-  ([t custom-type-mappings]
-   (let [all-components (conj @ui-components custom-type-mappings)]
-     (get all-components t))))
-
-(defn declare-ui-component! [t f]
-  (swap! ui-components conj {t f}))
+(defmulti ui-component
+  (fn [config _]
+    (:type config)))
 
 
-
-(defn ui-component [config state]
-  ; emitter callbacks should come down thru config transparently,
-  ; we shouldn't have to do anything special for them to propagate...
-  (let [t (:type config)
-        f (type->component t)
-        id (gensym "scf_field__")]
-    (if (fn? f)
-      [f config state]
-      (do
-        (js/console.error "no rendering function found for field type " t)
-        ; TODO do something more elegant here?
-        [:div.scf-placeholder]))))
-
-
-
-(defn text-ui []
+(defmethod ui-component :text [config ui-state]
   [:div "TODO text"])
 
-(defn textarea-ui []
+(defmethod ui-component :textarea [config ui-state]
   [:div "TODO textarea"])
 
-(defn range-ui []
+(defmethod ui-component :range [config ui-state]
   [:div "TODO range"])
 
-(defn checkbox-ui []
+(defmethod ui-component :checkbox [config ui-state]
   [:div "TODO checkbox"])
 
-(defn radio-ui []
+(defmethod ui-component :radio [config ui-state]
   [:div "TODO radio"])
 
-(defn select-ui []
+(defmethod ui-component :select [config ui-state]
   [:div "TODO select"])
 
-(defn file-ui []
+(defmethod ui-component :file [config ui-state]
   [:div "TODO file"])
 
-(defn link-ui []
-  [:div "TODO link"])
+(defmethod ui-component :link [config ui-state]
+  [:div.scf-link
+   [:input {:type "text"
+            :value (get-in config [:field-state :href])
+            :on-change #(swap! ui-state
+                               assoc-in
+                               (conj (:path config) :href)
+                               (.-target.value %))}]
+   [:input {:type "text"
+            :value (get-in config [:field-state :text])
+            :on-change #(swap! ui-state
+                               assoc-in
+                               (conj (:path config) :text)
+                               (.-target.value %))}]])
 
-(defn repeater-ui [config ui-state]
+(defmethod ui-component :repeater [config ui-state]
   (let [{:keys [:path :fields]} config
-        field-state (get-in @ui-state path)]
+        repeater-state (get-in @ui-state path)]
     [:div.scf-repeater
-     [:pre (js/JSON.stringify (clj->js @ui-state) nil 2)]
      [:h2.scf-label (:label config)]
-     (map (fn [[k v]]
-            ^{:key (gensym)}
-            [:div.scf-repeater-row
-             [ui-component v ui-state]])
-          fields)
+     (doall
+       (map-indexed
+         (fn [idx row-state]
+           ^{:key (gensym)}
+           [:div.scf-repeater-row
+            (doall
+              (map (fn [[sub-key sub-state]]
+                     (let [sub-path (conj path idx sub-key)
+                           sub-config (conj
+                                        (get-in config [:fields sub-key])
+                                        {:path sub-path
+                                         :field-state (get-in @ui-state sub-path)})]
+                       ^{:key (gensym)}
+                       [ui-component sub-config ui-state]))
+                   row-state))
+            ])
+         repeater-state))
      [:div [:button.scf-repeater-add-btn
             {:on-click #(swap! ui-state
                                update-in
@@ -75,13 +73,5 @@
                                (state/config->ui-state config))}
             (or (:add-row-text config) "Add a Row")]]]))
 
-(declare-ui-component! :text     text-ui)
-(declare-ui-component! :textarea textarea-ui)
-(declare-ui-component! :range    range-ui)
-(declare-ui-component! :checkbox checkbox-ui)
-(declare-ui-component! :radio    radio-ui)
-(declare-ui-component! :select   select-ui)
-(declare-ui-component! :file     file-ui)
-(declare-ui-component! :link     link-ui)
-(declare-ui-component! :repeater repeater-ui)
-
+(defmethod ui-component :scf-debugger [config ui-state]
+     [:pre (js/JSON.stringify (clj->js @ui-state) nil 2)])

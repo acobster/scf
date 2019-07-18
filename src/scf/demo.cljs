@@ -3,10 +3,17 @@
             [scf.core :as scf]))
 
 (def demo-config {:fields {:my-repeater {:label "My Repeater"
-                                    :type :repeater
-                                    :add-row-text "Add a Button"
-                                    :fields {:button {:type :link}
-                                             :button2 {:type :link}}}}})
+                                         :type :repeater
+                                         :add-row-text "Add a Button"
+                                         :fields {:button {:type :link}
+                                                  :button2 {:type :link}}}
+                           :my-textarea {:type :textarea}
+                           :my-range {:type :range}
+                           :my-checkbox {:type :checkbox}
+                           :my-radio {:type :radio}
+                           :my-select {:type :select}
+                           :my-file {:type :file}
+                           :my-debugger {:type :scf-debugger}}})
 
 (defonce demo-state (r/atom {}))
 (defn demo-ui [config state]
