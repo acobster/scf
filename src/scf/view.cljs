@@ -1,5 +1,6 @@
 (ns scf.view
-  (:require [scf.state :as state]))
+  (:require [scf.state :as state]
+            [scf.field :as field]))
 
 
 (defmulti ui-component
@@ -34,6 +35,7 @@
   (let [href-path (conj (:path config) :href)
         text-path (conj (:path config) :text)]
   [:div.scf-link
+   [:h2.scf-label (field/label config)]
    [:input {:type "text"
             :value (get-in @ui-state href-path)
             :on-change #(swap! ui-state
