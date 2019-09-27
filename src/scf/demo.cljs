@@ -1,6 +1,7 @@
 (ns scf.demo
   (:require [reagent.core :as r]
-            [scf.core :as scf]))
+            [scf.core :as scf]
+            [scf.view :refer [ui-component]]))
 
 (def demo-config {:fields [{:name :my-repeater
                             :label "My Repeater"
@@ -12,18 +13,49 @@
                                       :type :link}]}
                            {:name :my-link
                             :type :link}
+                           {:name :my-text
+                            :type :text}
+                           {:name :my-textarea
+                            :type :textarea
+                            :attrs {:cols 50
+                                    :rows 12}}
+                           {:name :my-range
+                            :type :range}
+                           {:name :my-checkbox
+                            :type :checkbox}
+                           {:name :my-radio
+                            :type :radio
+                            :options [[1 "One"]
+                                      [2 "Two"]
+                                      [3 "Three"]]}
+                           {:name :my-select
+                            :type :select
+                            :default "2"
+                            ; TODO how to load options async?
+                            :options [[1 "One"]
+                                      [2 "Two"]
+                                      [3 "Three"]]}
+                           {:name :my-multi-select
+                            :label "My Multi-Select"
+                            :type :multiselect
+                            :default #{"2" "4"}
+                            ; TODO how to load options async?
+                            :options [["1" "One"]
+                                      ["2" "Two"]
+                                      ["3" "Three"]
+                                      ["4" "Four"]
+                                      ["5" "Five"]]}
+                           {:name :my-file
+                            :type :file}
+                           {:name :my-image
+                            :type :image}
                            {:name :my-debugger
                             :type :scf-debugger}]})
 
-                           ; TODO
-                           ;:my-textarea {:type :textarea}
-                           ;:my-range {:type :range}
-                           ;:my-checkbox {:type :checkbox}
-                           ;:my-radio {:type :radio}
-                           ;:my-select {:type :select}
-                           ;:my-file {:type :file}
-
 (defonce demo-state (r/atom {}))
+
+(defmethod ui-component :image [config ui-state]
+  [:div "TODO IMAGE"])
 
 
 (defn mount-root []

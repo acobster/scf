@@ -4,6 +4,7 @@
             [scf.state :as state]))
 
 (defn ui [config ui-state]
+  ; TODO make ui-state init more dynamic, less hacky
   (reset! ui-state (state/config->ui-state config))
   [:div.scf-fields-ui
    (map (fn [{field-name :name :as field}]
@@ -14,5 +15,6 @@
                         :emitters {}})
            ui-state])
         (:fields config))
-   [:pre (js/JSON.stringify (clj->js config) nil 2)]])
+   ;[:pre (js/JSON.stringify (clj->js config) nil 2)]])
+   ])
 
