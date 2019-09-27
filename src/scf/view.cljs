@@ -10,8 +10,7 @@
 
 (defmethod ui-component :link [config ui-state]
   (let [href-path (conj (:path config) :href)
-        text-path (conj (:path config) :text)
-        focused (.-activeElement js/document)]
+        text-path (conj (:path config) :text)]
   [:div.scf-link
    [:input {:type "text"
             :value (get-in @ui-state href-path)
