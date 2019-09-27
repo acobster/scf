@@ -7,21 +7,27 @@
                                          :add-row-text "Add a Button"
                                          :fields {:button {:type :link}
                                                   :button2 {:type :link}}}
-                           :my-textarea {:type :textarea}
-                           :my-range {:type :range}
-                           :my-checkbox {:type :checkbox}
-                           :my-radio {:type :radio}
-                           :my-select {:type :select}
-                           :my-file {:type :file}
                            :my-debugger {:type :scf-debugger}}})
 
 (defonce demo-state (r/atom {}))
-(defn demo-ui [config state]
-  [:div#demo-ui
-   (scf/ui config state)])
+
+(defonce dummy-state (r/atom {}))
+
+(defn link-ui [config ui-state]
+  [:div.scf-link
+   [:input {:type "text"
+            :value (:val @ui-state)
+            :on-change (fn [event]
+                         (swap! ui-state assoc :val (.-target.value event)))}]
+   [:h4 "Config"]
+   [:pre (js/JSON.stringify (clj->js config) nil 2)]
+   [:h4 "State"]
+   [:pre (js/JSON.stringify (clj->js @ui-state) nil 2)]])
 
 (defn mount-root []
-  (r/render [demo-ui demo-config demo-state]
+  (r/render [:div
+             [link-ui {:path [:foo]} dummy-state]
+             [:div#real-ui (scf/ui demo-config demo-state)]]
             (.getElementById js/document "demo")))
 
 (defn init! []

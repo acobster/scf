@@ -14,5 +14,6 @@
                     ; TODO field-specific emitters
                     :emitters {}})
            ui-state])
-        (:fields config))])
+        (:fields config))
+   [:pre (js/JSON.stringify (clj->js config) true)]])
 
