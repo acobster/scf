@@ -2,13 +2,18 @@
   (:require [reagent.core :as r]
             [scf.core :as scf]))
 
-(def demo-config {:fields {:my-repeater {:label "My Repeater"
-                                         :type :repeater
-                                         :add-row-text "Add a Button"
-                                         :fields {:button {:type :link}
-                                                  :button2 {:type :link}}}
-                           :my-link {:type :link}
-                           :my-debugger {:type :scf-debugger}}})
+(def demo-config {:fields [{:name :my-repeater
+                            :label "My Repeater"
+                            :type :repeater
+                            :add-row-text "Add a Button"
+                            :fields [{:name :button
+                                      :type :link}
+                                     {:name :button2
+                                      :type :link}]}
+                           {:name :my-link
+                            :type :link}
+                           {:name :my-debugger
+                            :type :scf-debugger}]})
 
                            ; TODO
                            ;:my-textarea {:type :textarea}

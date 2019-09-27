@@ -60,16 +60,11 @@
            ^{:key (gensym)}
            [:div.scf-repeater-row
             (doall
-              (map (fn [[sub-key sub-state]]
-                     (let [sub-path (conj path idx sub-key)
-                           sub-config (conj
-                                        (get-in config [:fields sub-key])
-                                        {:path sub-path
-                                         :field-state (get-in @ui-state sub-path)})]
-                       ^{:key (gensym)}
+              (map (fn [{sub-name :name :as sub-field}]
+                     (let [sub-path (conj path idx sub-name)
+                           sub-config (conj sub-field {:path sub-path})]
                        [ui-component sub-config ui-state]))
-                   row-state))
-            ])
+                   fields))])
          repeater-state))
      [:div [:button.scf-repeater-add-btn
             {:on-click #(swap! ui-state

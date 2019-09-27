@@ -6,14 +6,13 @@
 (defn ui [config ui-state]
   (reset! ui-state (state/config->ui-state config))
   [:div.scf-fields-ui
-   (map (fn [[k v]]
-          ^{:key k}
+   (map (fn [{field-name :name :as field}]
+          ^{:key field-name}
           [view/ui-component
-           (conj v {:field-name k
-                    :path [k]
-                    ; TODO field-specific emitters
-                    :emitters {}})
+           (conj field {:path [field-name]
+                        ; TODO field-specific emitters
+                        :emitters {}})
            ui-state])
         (:fields config))
-   [:pre (js/JSON.stringify (clj->js config) true)]])
+   [:pre (js/JSON.stringify (clj->js config) nil 2)]])
 

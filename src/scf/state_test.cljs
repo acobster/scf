@@ -9,8 +9,8 @@
   (testing "With a few simple fields"
     (is (= {:my-button {:href "" :text ""}
             :my-input  {:value ""}}
-           (subject/config->ui-state {:fields {:my-button {:type :link}
-                                               :my-input  {:type :text}}}))))
+           (subject/config->ui-state {:fields [{:name :my-button :type :link}
+                                               {:name :my-input  :type :text}]}))))
 
   (testing "With nested fields"
     (is (= {:my-button   {:href "" :text ""}
@@ -18,7 +18,8 @@
                            :nested-text {:value ""}}]}
            (subject/config->ui-state
              {:fields
-              {:my-button {:type :link}
-               :my-repeater {:type :repeater
-                             :fields {:nested-btn {:type :link}
-                                      :nested-text {:type :text}}}}})))))
+              [{:name :my-button :type :link}
+               {:name :my-repeater
+                :type :repeater
+                :fields [{:name :nested-btn :type :link}
+                         {:name :nested-text :type :text}]}]})))))
