@@ -9,21 +9,26 @@
 
 
 (defmethod ui-component :link [config ui-state]
+  (let [href-path (conj (:path config) :href)
+        text-path (conj (:path config) :text)
+        focused (.-activeElement js/document)]
   [:div.scf-link
    [:input {:type "text"
-            :value (get-in config [:field-state :href])
+            :value (get-in @ui-state href-path)
             :on-change #(swap! ui-state
                                assoc-in
-                               (conj (:path config) :href)
+                               href-path
                                (.-target.value %))}]
    [:input {:type "text"
-            :value (get-in config [:field-state :text])
+            :value (get-in @ui-state text-path)
             :on-change #(swap! ui-state
                                assoc-in
-                               (conj (:path config) :text)
-                               (.-target.value %))}]])
+                               text-path
+                               (.-target.value %))}]]))
+
 
 (defmethod ui-component :repeater [config ui-state]
+  "WORK IN PROGRESS - Nested Repeater field"
   (let [{:keys [:path :fields]} config
         repeater-state (get-in @ui-state path)]
     [:div.scf-repeater
