@@ -10,6 +10,14 @@
                            :my-link {:type :link}
                            :my-debugger {:type :scf-debugger}}})
 
+                           ; TODO
+                           ;:my-textarea {:type :textarea}
+                           ;:my-range {:type :range}
+                           ;:my-checkbox {:type :checkbox}
+                           ;:my-radio {:type :radio}
+                           ;:my-select {:type :select}
+                           ;:my-file {:type :file}
+
 (defonce demo-state (r/atom {}))
 
 

@@ -8,6 +8,28 @@
 
 
 
+(defmethod ui-component :text [config ui-state]
+  [:div "TODO text"])
+
+(defmethod ui-component :textarea [config ui-state]
+  [:div "TODO textarea"])
+
+(defmethod ui-component :range [config ui-state]
+  [:div "TODO range"])
+
+(defmethod ui-component :checkbox [config ui-state]
+  [:div "TODO checkbox"])
+
+(defmethod ui-component :radio [config ui-state]
+  [:div "TODO radio"])
+
+(defmethod ui-component :select [config ui-state]
+  [:div "TODO select"])
+
+(defmethod ui-component :file [config ui-state]
+  [:div "TODO file"])
+
+
 (defmethod ui-component :link [config ui-state]
   (let [href-path (conj (:path config) :href)
         text-path (conj (:path config) :text)]
