@@ -7,7 +7,7 @@
   (reset! ui-state (state/config->ui-state config))
   [:div.scf-fields-ui
    (map (fn [[k v]]
-          ^{:key (gensym)}
+          ^{:key k}
           [view/ui-component
            (conj v {:field-name k
                     :path [k]
