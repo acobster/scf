@@ -14,6 +14,14 @@
                            {:name :my-link
                             :type :link}
                            {:name :my-text
+                            :label "Label Above (Default)"
+                            :type :text}
+                           {:name :my-text
+                            :label "Label Before"
+                            :type :text
+                            :layout :label-before}
+                           {:name :my-text
+                            :label "Label After"
                             :type :text
                             :layout :label-after}
                            {:name :my-textarea
