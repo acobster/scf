@@ -18,3 +18,32 @@
     (keyword? path) [path html]
     (fn? path) (path html)
     :else (reduce (fn [wrapped wrapper] [wrapper wrapped]) html (reverse path))))
+
+
+(defmulti layout (fn [config _]
+                   (:layout config)))
+
+
+(defmethod layout :label-above [config & inputs]
+  (apply conj
+         ; TODO wrapper-class abstraction
+         [:div {:class (or (:wrapper-class config) "scf-field")}
+          ; TODO label-class abstraction
+          [:h2 {:class (or (:label-class config) "scf-label")} (label config)]]
+         inputs))
+
+(defmethod layout :label-before [config & inputs]
+  (apply conj
+         [:div {:class (or (:wrapper-class config) "scf-field")}
+          [:span {:class (or (:label-class config) "scf-label")} (label config)]]
+         inputs))
+
+(defmethod layout :label-after [config & inputs]
+  (apply conj
+         [:div {:class (or (:wrapper-class config) "scf-field")}]
+         (conj (vec inputs)
+               [:span {:class (or (:label-class config) "scf-label")}
+                (label config)])))
+
+(defmethod layout :default [config & inputs]
+  (apply layout (conj config {:layout :label-above}) inputs))

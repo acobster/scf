@@ -14,7 +14,8 @@
                            {:name :my-link
                             :type :link}
                            {:name :my-text
-                            :type :text}
+                            :type :text
+                            :layout :label-after}
                            {:name :my-textarea
                             :type :textarea
                             :attrs {:cols 50
