@@ -11,12 +11,12 @@
 
 (defmethod ui-component :text [config ui-state]
   (let [path (conj (:path config) :value)
-        attrs (:attrs config)]
+        attrs (or (:attrs config) {})]
     (field/layout
       (conj {:wrapper-class "scf-text"} config)
-      [:input {:type "text"
-               :value (get-in @ui-state path)
-               :on-change (state/emitter ui-state path)}])))
+      [:input (conj attrs {:type "text"
+                           :value (get-in @ui-state path)
+                           :on-change (state/emitter ui-state path)})])))
 
 (defmethod ui-component :textarea [config ui-state]
   (let [path (conj (:path config) :value)
