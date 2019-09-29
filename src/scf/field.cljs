@@ -69,5 +69,5 @@
     (conj user-attrs
           {:checked (get-in @ui-state path)
            :value (:value config)
-           :on-change (state/emitter ui-state path)}
+           :on-change (state/toggle-emitter ui-state path)}
           custom-attrs)))

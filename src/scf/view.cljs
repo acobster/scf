@@ -17,27 +17,24 @@
 
 
 (defmethod ui-component :textarea [config ui-state]
-  (let [path (conj (:path config) :value)
-        attrs (:attrs config)]
-    [:div.scf-textarea
-     [:h2.scf-label (field/label config)]
-     [:textarea (conj attrs {:value (get-in @ui-state path)
-                             :on-change (state/emitter ui-state path)})]]))
+  (let [config (conj config {:wrapper-class "scf-textarea"
+                             :attr-preset :standard})]
+    (field/layout config
+                  [:textarea (field/attrs config ui-state {:type "textarea"})])))
+
 
 (defmethod ui-component :range [config ui-state]
   (let [path (conj (:path config) :value)]
     [:div.scf-range
      "TODO range"]))
 
+
 (defmethod ui-component :checkbox [config ui-state]
-  (let [path (conj (:path config) :checked)
-        attrs (or (:attrs config) {})
-        checked? (get-in @ui-state path)]
-    [:div.scf-checkbox
-     [:h2.scf-label (field/label config)]
-     [:input {:type "checkbox"
-              :checked checked?
-              :on-change (state/toggle-emitter ui-state path)}]]))
+  (let [config (conj config {:wrapper-class "scf-checkbox"
+                             :attr-preset :checkbox})]
+    (field/layout config
+                  [:input (field/attrs config ui-state {:type "checkbox"})])))
+
 
 (defmethod ui-component :radio [config ui-state]
   (let [path (conj (:path config) :value)
