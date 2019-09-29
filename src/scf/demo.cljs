@@ -34,7 +34,8 @@
                            {:name :my-range
                             :type :range}
                            {:name :my-checkbox
-                            :type :checkbox}
+                            :type :checkbox
+                            :checkbox-label "Enable"}
                            {:name :my-radio
                             :type :radio
                             :options [[1 "One"]

@@ -31,9 +31,14 @@
 
 (defmethod ui-component :checkbox [config ui-state]
   (let [config (conj config {:wrapper-class "scf-checkbox"
-                             :attr-preset :checkbox})]
+                             :attr-preset :checkbox})
+        ; TODO abstraction for specifying/generating ids
+        id (gensym "scf-checkbox-")
+        label (or (:checkbox-label config) "Yes")]
     (field/layout config
-                  [:input (field/attrs config ui-state {:type "checkbox"})])))
+                  [:input (field/attrs config ui-state {:type "checkbox"
+                                                        :id id})]
+                  [:label {:for id} label])))
 
 
 (defmethod ui-component :radio [config ui-state]
