@@ -1,6 +1,7 @@
 (ns scf.field-test
   (:require [cljs.test :refer [deftest is testing]]
-            [scf.field :as subject]))
+            [scf.field :as subject]
+            [scf.state :as state]))
 
 
 (deftest label
@@ -55,3 +56,24 @@
               input
               [:span {:class "scf-label"} "My Field"]]
              (subject/layout (conj field {:layout :label-after}) input))))))
+
+(deftest attrs
+  (let [config {:type "whatever"
+                :path [:one 2]
+                :attrs {:name "my_form_field"
+                        :data-custom "my data"}}
+        ui-state (atom {:one [{} {} {:value 3}]})]
+
+    (testing "standard preset"
+      (let [attrs (subject/attrs (conj config {:attr-preset :standard})
+                                 ui-state
+                                 {:type "text"
+                                  :class "fancy"})]
+        (is (= {:type "text"
+                :class "fancy"
+                :value 3
+                :name "my_form_field"
+                :data-custom "my data"}
+               ; don't try to compare the :on-change handlers
+               (dissoc attrs :on-change)))
+        (is (fn? (:on-change attrs)))))))

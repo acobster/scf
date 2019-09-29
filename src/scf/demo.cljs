@@ -16,11 +16,11 @@
                            {:name :my-text
                             :label "Label Above (Default)"
                             :type :text}
-                           {:name :my-text
+                           {:name :my-text-2
                             :label "Label Before"
                             :type :text
                             :layout :label-before}
-                           {:name :my-text
+                           {:name :my-text-3
                             :label "Label After"
                             :type :text
                             :layout :label-after}

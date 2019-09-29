@@ -1,5 +1,6 @@
 (ns scf.field
-  (:require [clojure.string :as string]))
+  (:require [clojure.string :as string]
+            [scf.state :as state]))
 
 
 (defn label [{field-label :label field-name :name}]
@@ -41,9 +42,23 @@
 (defmethod layout :label-after [config & inputs]
   (apply conj
          [:div {:class (or (:wrapper-class config) "scf-field")}]
-         (conj (vec inputs)
+         (conj (vec inputs) ; we get inputs as a list, which behaves
+                            ; differently with conj
                [:span {:class (or (:label-class config) "scf-label")}
                 (label config)])))
 
 (defmethod layout :default [config & inputs]
   (apply layout (conj config {:layout :label-above}) inputs))
+
+
+
+(defmulti attrs (fn [config _ _]
+                  (:attr-preset config)))
+
+(defmethod attrs :standard [config ui-state custom-attrs]
+  (let [user-attrs (or (:attrs config) {})
+        path (conj (:path config) :value)]
+    (conj user-attrs
+          {:value (get-in @ui-state path)
+           :on-change (state/emitter ui-state path)}
+          custom-attrs)))
