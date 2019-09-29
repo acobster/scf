@@ -37,23 +37,21 @@
 
 
 (defmethod ui-component :radio [config ui-state]
-  (let [path (conj (:path config) :value)
-        attrs (or (:attrs config) {})
-        options (:options config)]
-    [:div.scf-radio
-     [:h2.scf-label (field/label config)]
-     (doall
-       (map (fn [[value label]]
-              (let [id (gensym "scf-radio")]
-                ^{:key value}
-                [:div.scf-radio-option
-                 [:input (conj attrs {:name (:name config)
-                                      :type "radio"
-                                      :id id
-                                      :value value
-                                      :on-click (state/emitter ui-state path)})]
-                 [:label {:for id} label]]))
-            options))]))
+  (let [config (conj config {:wrapper-class "scf-radio"
+                             :attr-preset :standard})
+        radio (fn [[value label]]
+                (let [id (gensym "scf-radio-")]
+                  ^{:key value}
+                  [:div.scf-radio-option
+                   [:input (field/attrs config
+                                        ui-state
+                                        {:name (:name config)
+                                         :value value
+                                         :type "radio"
+                                         :id id})]
+                   [:label {:for id} (field/label config)]]))
+        inputs (doall (map radio (:options config)))]
+    (apply field/layout config inputs)))
 
 (defmethod ui-component :select [config ui-state]
   (let [path (conj (:path config) :value)
