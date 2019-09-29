@@ -61,17 +61,32 @@
   (let [config {:type "whatever"
                 :path [:one 2]
                 :attrs {:name "my_form_field"
-                        :data-custom "my data"}}
-        ui-state (atom {:one [{} {} {:value 3}]})]
+                        :data-custom "my data"}}]
 
     (testing "standard preset"
       (let [attrs (subject/attrs (conj config {:attr-preset :standard})
-                                 ui-state
+                                 (atom {:one [{} {} {:value 3}]})
                                  {:type "text"
                                   :class "fancy"})]
         (is (= {:type "text"
                 :class "fancy"
                 :value 3
+                :name "my_form_field"
+                :data-custom "my data"}
+               ; don't try to compare the :on-change handlers
+               (dissoc attrs :on-change)))
+        (is (fn? (:on-change attrs)))))
+
+    (testing "checkbox preset"
+      (let [attrs (subject/attrs (conj config {:attr-preset :checkbox
+                                               :value 123})
+                                 (atom {:one [{} {} {:checked false}]})
+                                 {:type "text"
+                                  :class "fancy"})]
+        (is (= {:type "text"
+                :class "fancy"
+                :checked false
+                :value 123
                 :name "my_form_field"
                 :data-custom "my data"}
                ; don't try to compare the :on-change handlers

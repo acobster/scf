@@ -62,3 +62,12 @@
           {:value (get-in @ui-state path)
            :on-change (state/emitter ui-state path)}
           custom-attrs)))
+
+(defmethod attrs :checkbox [config ui-state custom-attrs]
+  (let [user-attrs (or (:attrs config) {})
+        path (conj (:path config) :checked)]
+    (conj user-attrs
+          {:checked (get-in @ui-state path)
+           :value (:value config)
+           :on-change (state/emitter ui-state path)}
+          custom-attrs)))
