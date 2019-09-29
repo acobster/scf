@@ -103,16 +103,30 @@
 
 
 (defmethod ui-component :link [config ui-state]
-  (let [href-path (conj (:path config) :href)
-        text-path (conj (:path config) :text)]
-  [:div.scf-link
-   [:h2.scf-label (field/label config)]
-   [:input {:type "text"
-            :value (get-in @ui-state href-path)
-            :on-change (state/emitter ui-state href-path)}]
-   [:input {:type "text"
-            :value (get-in @ui-state text-path)
-            :on-change (state/emitter ui-state text-path)}]]))
+  (let [config (conj config {:attr-preset :standard})
+        href-id (gensym "scf-link-href-")
+        text-id (gensym "scf-link-text-")
+        href-path (conj (:path config) :href)
+        text-path (conj (:path config) :text)
+        href-attrs (field/attrs config
+                                ui-state
+                                {:type "text"
+                                 :value (get-in @ui-state href-path)
+                                 :on-change (state/emitter ui-state href-path)
+                                 :id href-id})
+        text-attrs (field/attrs config
+                                ui-state
+                                {:type "text"
+                                 :value (get-in @ui-state text-path)
+                                 :on-change (state/emitter ui-state text-path)
+                                 :id text-id})]
+    (field/layout config
+                  [:div.scf-link-href
+                   [:label {:for href-id} "Link URL:"]
+                   [:input href-attrs]]
+                  [:div.scf-link-text
+                   [:label {:for text-id} "Link Text:"]
+                   [:input text-attrs]])))
 
 
 (defmethod ui-component :repeater [config ui-state]
