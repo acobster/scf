@@ -35,6 +35,7 @@
         ; TODO abstraction for specifying/generating ids
         id (gensym "scf-checkbox-")
         label (or (:checkbox-label config) "Yes")]
+
     (field/layout config
                   [:input (field/attrs config ui-state {:type "checkbox"
                                                         :id id})]
@@ -56,23 +57,23 @@
                                          :id id})]
                    [:label {:for id} (field/label config)]]))
         inputs (doall (map radio (:options config)))]
+
     (apply field/layout config inputs)))
 
 
 (defmethod ui-component :select [config ui-state]
-  (let [path (conj (:path config) :value)
-        attrs (or (:attrs config) {})
-        options (:options config)
-        selected (or (get-in @ui-state path) (:default config))]
-    [:div.scf-select
-     [:h2.scf-label (field/label config)]
-     [:select (conj attrs {:value selected
-                           :on-change (state/emitter ui-state path)})
-      (doall
-        (map (fn [[value label]]
-               ^{:key (gensym)}
-               [:option {:value value} label])
-             options))]]))
+  (let [config (conj config {:attr-preset :standard})
+        path (conj (:path config) :value)
+        selected (or (get-in @ui-state path) (:default config))
+        options (doall
+                  (map (fn [[value label]]
+                         ^{:key (gensym)}
+                         [:option {:value value} label])
+                       (:options config)))]
+
+    (field/layout config
+                  [:select (field/attrs config ui-state {:value selected})
+                   options])))
 
 
 (defmethod ui-component :multiselect [config ui-state]
