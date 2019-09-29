@@ -1,7 +1,8 @@
 (ns scf.demo
   (:require [reagent.core :as r]
             [scf.core :as scf]
-            [scf.view :refer [ui-component]]))
+            [scf.view :refer [ui-component]]
+            [scf.state :as state]))
 
 (def demo-config {:fields [{:name :my-repeater
                             :label "My Repeater"
@@ -15,7 +16,9 @@
                             :type :link}
                            {:name :my-text
                             :label "Label Above (Default)"
-                            :type :text}
+                            :type :text
+                            ; TODO get something like this to work...
+                            :attrs {:on-change #(js/console.log "something happened")}}
                            {:name :my-text-2
                             :label "Label Before"
                             :type :text

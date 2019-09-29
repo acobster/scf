@@ -53,6 +53,7 @@
         inputs (doall (map radio (:options config)))]
     (apply field/layout config inputs)))
 
+
 (defmethod ui-component :select [config ui-state]
   (let [path (conj (:path config) :value)
         attrs (or (:attrs config) {})
@@ -67,6 +68,7 @@
                ^{:key (gensym)}
                [:option {:value value} label])
              options))]]))
+
 
 (defmethod ui-component :multiselect [config ui-state]
   "WORK IN PROGRESS multiselect"
@@ -91,6 +93,7 @@
                ^{:key value}
                [:option {:value value} label])
              options))]]))
+
 
 (defmethod ui-component :file [config ui-state]
   (let [path (conj (:path config) :value)
